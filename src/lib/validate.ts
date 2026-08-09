@@ -43,3 +43,37 @@ export const userSchema = z.object({
   password: z.string().min(6, "密码至少 6 位").optional(),
   role: z.string().default("author"),
 });
+
+export const PRODUCT_STATUS = ["draft", "published", "archived"] as const;
+
+export const productCategorySchema = z.object({
+  name: z.string().min(1, "分类名称不能为空").max(100, "分类名称过长"),
+  nameEn: z.string().max(100).optional(),
+  slug: z.string().trim().optional(),
+  parentId: emptyToNull,
+  description: z.string().max(500).optional(),
+  sortOrder: z.coerce.number().int().default(0),
+});
+
+export type ProductCategoryInput = z.infer<typeof productCategorySchema>;
+
+export const productSchema = z.object({
+  name: z.string().min(1, "产品名称不能为空").max(200, "产品名称不能超过 200 字"),
+  nameEn: z.string().max(200).optional(),
+  slug: z.string().trim().optional(),
+  categoryId: emptyToNull,
+  summary: z.string().max(1000).optional(),
+  summaryEn: z.string().max(1000).optional(),
+  description: z.string().optional(),
+  descriptionEn: z.string().optional(),
+  spec: z.string().optional(), // JSON [{label,value}]（中文）
+  specEn: z.string().optional(), // JSON [{label,value}]（英文）
+  coverImage: z.string().max(500).optional(),
+  images: z.string().optional(), // JSON 数组
+  status: z.enum(PRODUCT_STATUS).default("draft"),
+  isFeatured: z.coerce.number().int().min(0).max(1).default(0),
+  seoTitle: z.string().max(200).optional(),
+  seoKeywords: z.string().max(500).optional(),
+});
+
+export type ProductInput = z.infer<typeof productSchema>;

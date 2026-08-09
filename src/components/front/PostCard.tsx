@@ -14,15 +14,21 @@ export interface PostListItem {
   viewCount: number;
 }
 
-export default function PostCard({ post }: { post: PostListItem }) {
+export default function PostCard({
+  post,
+  lang,
+}: {
+  post: PostListItem;
+  lang: string;
+}) {
   return (
-    <article className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+    <article className="bg-(--t-surface) rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden">
       <div className="p-5">
-        <div className="flex items-center gap-3 text-xs text-gray-400 mb-2">
+        <div className="flex items-center gap-3 text-xs text-(--t-faint) mb-2">
           {post.categoryName && post.categorySlug ? (
             <Link
-              href={`/category/${post.categorySlug}`}
-              className="text-blue-600 hover:underline"
+              href={`/${lang}/category/${post.categorySlug}`}
+              className="text-(--t-accent) hover:underline"
             >
               {post.categoryName}
             </Link>
@@ -33,13 +39,13 @@ export default function PostCard({ post }: { post: PostListItem }) {
           <span>·</span>
           <span>{post.viewCount} 次浏览</span>
         </div>
-        <Link href={`/blog/${post.slug}`}>
-          <h2 className="text-lg font-semibold text-gray-900 hover:text-blue-600 leading-snug">
+        <Link href={`/${lang}/blog/${post.slug}`}>
+          <h2 className="text-lg font-semibold text-(--t-text) hover:text-(--t-accent) leading-snug">
             {post.title}
           </h2>
         </Link>
         {post.excerpt && (
-          <p className="mt-2 text-sm text-gray-500 line-clamp-2">{post.excerpt}</p>
+          <p className="mt-2 text-sm text-(--t-muted2) line-clamp-2">{post.excerpt}</p>
         )}
       </div>
     </article>

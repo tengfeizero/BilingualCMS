@@ -44,10 +44,16 @@ export function PageHeader({
   );
 }
 
-export function BackLink({ href }: { href: string }) {
+export function BackLink({
+  href,
+  label = "← 返回",
+}: {
+  href: string;
+  label?: string;
+}) {
   return (
     <Link href={href} className="text-sm text-gray-500 hover:text-gray-800">
-      ← 返回
+      {label}
     </Link>
   );
 }

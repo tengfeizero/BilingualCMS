@@ -113,6 +113,57 @@ CREATE TABLE IF NOT EXISTS settings (
   value TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS product_categories (
+  id          INTEGER PRIMARY KEY AUTOINCREMENT,
+  name        TEXT NOT NULL,
+  name_en     TEXT,
+  slug        TEXT NOT NULL UNIQUE,
+  parent_id   INTEGER REFERENCES product_categories(id) ON DELETE SET NULL,
+  description TEXT,
+  sort_order  INTEGER NOT NULL DEFAULT 0,
+  created_at  TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS products (
+  id             INTEGER PRIMARY KEY AUTOINCREMENT,
+  name           TEXT NOT NULL,
+  name_en        TEXT,
+  slug           TEXT NOT NULL UNIQUE,
+  category_id    INTEGER REFERENCES product_categories(id) ON DELETE SET NULL,
+  summary        TEXT,
+  summary_en     TEXT,
+  description    TEXT,
+  description_en TEXT,
+  spec           TEXT,
+  spec_en        TEXT,
+  cover_image    TEXT,
+  images         TEXT NOT NULL DEFAULT '[]',
+  status         TEXT NOT NULL DEFAULT 'draft',
+  is_featured    INTEGER NOT NULL DEFAULT 0,
+  view_count     INTEGER NOT NULL DEFAULT 0,
+  seo_title      TEXT,
+  seo_keywords   TEXT,
+  created_at     TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at     TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_products_category ON products(category_id);
+CREATE INDEX IF NOT EXISTS idx_products_status ON products(status);
+
+CREATE TABLE IF NOT EXISTS inquiries (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  name       TEXT NOT NULL,
+  email      TEXT NOT NULL,
+  whatsapp   TEXT,
+  country    TEXT,
+  company    TEXT,
+  product_id INTEGER REFERENCES products(id) ON DELETE SET NULL,
+  message    TEXT,
+  ip         TEXT,
+  status     TEXT NOT NULL DEFAULT 'new',
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_inquiries_status ON inquiries(status);
+
 -- 全文搜索（FTS5 外部内容表，trigram 分词器支持中文检索）
 DROP TABLE IF EXISTS posts_fts;
 CREATE VIRTUAL TABLE IF NOT EXISTS posts_fts USING fts5(
@@ -157,8 +208,11 @@ const ROLES = [
       "category:manage",
       "user:manage",
       "setting:manage",
+      "audit:view",
+      "product:manage",
+      "inquiry:manage",
     ],
-    description: "管理员，可管理内容、媒体、用户与设置",
+    description: "管理员，可管理内容、产品、询盘、媒体、用户与设置",
   },
   {
     name: "editor",
@@ -173,14 +227,36 @@ const ROLES = [
 ];
 
 const DEFAULT_SETTINGS: Record<string, unknown> = {
-  site_name: "My CMS",
-  site_description: "基于 Next.js + SQLite 的内容管理系统",
+  site_name: "My Factory",
+  site_description: "专业工厂，优质产品，欢迎询盘",
   site_logo: "",
   allow_register: false,
+  // 海外独立站扩展设置
+  site_name_en: "My Factory",
+  site_description_en: "Professional factory, quality products, welcome inquiries",
+  front_theme: "light",
+  contact_email: "",
+  whatsapp_number: "",
+  contact_phone: "",
+  contact_address: "",
+  contact_address_en: "",
+  smtp_host: "",
+  smtp_port: "",
+  smtp_user: "",
+  smtp_password: "",
 };
 
 function seed() {
   sqlite.exec(DDL);
+
+  // 旧库迁移：为 products 表补充 spec_en 列
+  const productCols = sqlite.prepare("PRAGMA table_info(products)").all() as {
+    name: string;
+  }[];
+  if (!productCols.some((c) => c.name === "spec_en")) {
+    sqlite.exec("ALTER TABLE products ADD COLUMN spec_en TEXT;");
+    console.log("✔ 已迁移：products 表新增 spec_en 列");
+  }
 
   // 重建 FTS 索引（重建虚拟表后需重新填充）
   sqlite.exec("INSERT INTO posts_fts(posts_fts) VALUES('rebuild');");

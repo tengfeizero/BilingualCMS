@@ -18,6 +18,67 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* ===== 前台主题（CSS 变量驱动）=====
+ * 由前台布局依据后台「系统设置 → 前台主题」写入 data-theme 属性。
+ * 组件通过 Tailwind 变量语法使用：bg-(--t-surface)、text-(--t-text) 等。 */
+:root {
+  --t-bg: #ffffff;
+  --t-surface: #ffffff;
+  --t-surface2: #f9fafb;
+  --t-surface3: #f3f4f6;
+  --t-text: #111827;
+  --t-muted: #4b5563;
+  --t-muted2: #6b7280;
+  --t-faint: #9ca3af;
+  --t-border: #f3f4f6;
+  --t-border2: #e5e7eb;
+  --t-border3: #d1d5db;
+  --t-ink: #111827;
+  --t-ink-hover: #374151;
+  --t-on-ink: #ffffff;
+  --t-accent: #2563eb;
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --t-bg: #0b0f17;
+  --t-surface: #131a26;
+  --t-surface2: #1c2433;
+  --t-surface3: #2a3446;
+  --t-text: #f3f4f6;
+  --t-muted: #cbd5e1;
+  --t-muted2: #94a3b8;
+  --t-faint: #64748b;
+  --t-border: rgba(255, 255, 255, 0.08);
+  --t-border2: rgba(255, 255, 255, 0.14);
+  --t-border3: rgba(255, 255, 255, 0.22);
+  --t-ink: #f3f4f6;
+  --t-ink-hover: #d1d5db;
+  --t-on-ink: #0b0f17;
+  --t-accent: #60a5fa;
+  color-scheme: dark;
+}
+
+[data-theme="blue"] {
+  --t-bg: #ffffff;
+  --t-surface: #ffffff;
+  --t-surface2: #eff6ff;
+  --t-surface3: #dbeafe;
+  --t-text: #0f172a;
+  --t-muted: #475569;
+  --t-muted2: #64748b;
+  --t-faint: #94a3b8;
+  --t-border: #e2e8f0;
+  --t-border2: #cbd5e1;
+  --t-border3: #93c5fd;
+  --t-ink: #2563eb;
+  --t-ink-hover: #1d4ed8;
+  --t-on-ink: #ffffff;
+  --t-accent: #2563eb;
+  color-scheme: light;
+}
+
+
 /* 富文本内容基础样式 */
 .prose-cms {
   line-height: 1.75;

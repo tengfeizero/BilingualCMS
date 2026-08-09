@@ -2,16 +2,19 @@
 
 基于 **Next.js + SQLite** 的自建内容管理系统，前后端一体，数据存储于单文件 SQLite 数据库，部署简单、零外部依赖。
 
+> **当前定位升级**：本项目同时用于搭建**海外 B2B 工厂独立站**——面向海外买家宣传工厂与产品，支持产品展示、中英双语、询盘获客（站内表单 + 邮件 + WhatsApp），询盘后线下报价成交。
+
 ---
 
 ## 1. 项目简介
 
-- **定位**：轻量级、可扩展的内容管理系统，覆盖内容发布、分类、媒体、用户权限、SEO 等核心能力。
+- **定位**：轻量级、可扩展的内容管理系统，覆盖内容发布、产品展示、分类、媒体、用户权限、SEO 等核心能力；同时支持海外 B2B 独立站场景（中英双语 + 产品询盘）。
 - **技术栈**：Next.js (App Router) + TypeScript + SQLite + Tailwind CSS
 - **核心原则**：
   - 单进程、单文件数据库，开箱即用，无需额外安装 MySQL/Redis
   - 前后端一体（Server Actions + Route Handlers），也可对外暴露 REST API
   - 后台管理界面与前台展示共用一套代码，通过路由 `/admin` 隔离
+  - 前台界面参考 Apple 官网风格：大留白、大图、简洁高级的产品展示
 
 ---
 
@@ -49,6 +52,14 @@
 - 树形无限层级分类
 - 标签体系
 - 置顶 / 排序 / 权重
+
+### 3.9 海外独立站模块（B2B 工厂站）
+- **产品展示**：独立产品模块，产品分类、规格参数、多图展示、上架状态
+- **中英双语**：前台 `/en` 英文与默认中文双版本，产品/分类/文章双语内容
+- **询盘获客**：产品页询盘表单 + 联系页，提交后入库并邮件通知；支持 WhatsApp 按钮与邮件直达
+- **询盘管理**：后台查看/筛选/处理询盘记录
+- **工厂介绍**：关于我们、工厂实力、联系页
+- **苹果风格前台**：大图 Hero、大留白、精致产品卡片，面向海外买家的视觉设计
 
 ### 3.3 媒体库
 - 图片 / 文件上传，自动重命名防冲突
@@ -233,6 +244,59 @@ CREATE TABLE settings (
   value      TEXT NOT NULL                -- JSON 序列化
 );
 
+-- 产品分类（独立站）
+CREATE TABLE product_categories (
+  id          INTEGER PRIMARY KEY AUTOINCREMENT,
+  name        TEXT NOT NULL,              -- 中文名
+  name_en     TEXT,                       -- 英文名
+  slug        TEXT NOT NULL UNIQUE,
+  parent_id   INTEGER REFERENCES product_categories(id) ON DELETE SET NULL,
+  description TEXT,
+  sort_order  INTEGER NOT NULL DEFAULT 0,
+  created_at  TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+-- 产品（独立站）
+CREATE TABLE products (
+  id            INTEGER PRIMARY KEY AUTOINCREMENT,
+  name          TEXT NOT NULL,            -- 中文名
+  name_en       TEXT,                     -- 英文名
+  slug          TEXT NOT NULL UNIQUE,
+  category_id   INTEGER REFERENCES product_categories(id) ON DELETE SET NULL,
+  summary       TEXT,                     -- 中文简介
+  summary_en    TEXT,                     -- 英文简介
+  description   TEXT,                     -- 中文详情（HTML）
+  description_en TEXT,                    -- 英文详情（HTML）
+  spec          TEXT,                     -- 规格参数（JSON 数组 [{label,value}]）
+  cover_image   TEXT,
+  images        TEXT DEFAULT '[]',        -- 多图（JSON 数组）
+  status        TEXT NOT NULL DEFAULT 'draft',  -- draft / published / archived
+  is_featured   INTEGER NOT NULL DEFAULT 0,     -- 首页精选
+  view_count    INTEGER NOT NULL DEFAULT 0,
+  seo_title     TEXT,
+  seo_keywords  TEXT,
+  created_at    TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at    TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX idx_products_category ON products(category_id);
+CREATE INDEX idx_products_status ON products(status);
+
+-- 询盘记录（独立站）
+CREATE TABLE inquiries (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  name       TEXT NOT NULL,
+  email      TEXT NOT NULL,
+  whatsapp   TEXT,
+  country    TEXT,
+  company    TEXT,
+  product_id INTEGER REFERENCES products(id) ON DELETE SET NULL,
+  message    TEXT,
+  ip         TEXT,
+  status     TEXT NOT NULL DEFAULT 'new',  -- new / processing / done
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX idx_inquiries_status ON inquiries(status);
+
 -- 全文搜索（FTS5 虚拟表，同步 posts 数据）
 CREATE VIRTUAL TABLE posts_fts USING fts5(
   title, content, excerpt,
@@ -254,6 +318,9 @@ CREATE VIRTUAL TABLE posts_fts USING fts5(
 | GET | `/api/tags` | 标签列表 |
 | GET | `/api/search?q=xxx` | 全文搜索 |
 | GET | `/api/media/:id` | 媒体信息 |
+| GET | `/api/products` | 产品列表（分页、分类筛选） |
+| GET | `/api/products/:slug` | 产品详情 |
+| POST | `/api/inquiries` | 提交询盘（公开） |
 
 ### 6.2 后台管理 API（需认证 + 权限）
 
@@ -271,6 +338,8 @@ CREATE VIRTUAL TABLE posts_fts USING fts5(
 | POST | `/api/admin/users` | `user:manage` | 创建用户 / 分配角色 |
 | GET/PUT | `/api/admin/settings` | `setting:manage` | 站点设置 |
 | GET | `/api/admin/dashboard` | 登录用户 | 仪表盘统计数据 |
+| POST | `/api/admin/products` | `product:manage` | 产品增删改 |
+| GET | `/api/admin/inquiries` | `inquiry:manage` | 询盘列表/状态处理 |
 
 > 后台写操作优先使用 **Server Actions**（更安全、减少客户端代码），API 路由作为等价补充对外暴露。
 
@@ -292,17 +361,22 @@ CMS/
 └── src/
     ├── app/
     │   ├── layout.tsx           # 根布局
-    │   ├── page.tsx             # 前台首页
-    │   ├── blog/                # 前台内容页
-    │   │   ├── page.tsx         # 文章列表
-    │   │   └── [slug]/page.tsx  # 文章详情
-    │   ├── category/[slug]/page.tsx
-    │   ├── tag/[slug]/page.tsx
-    │   ├── search/page.tsx      # 搜索页
+    │   ├── [lang]/             # 前台（中英双语）
+    │   │   ├── layout.tsx      # 前台布局（Header/Footer）
+    │   │   ├── page.tsx        # 首页（苹果风格 Hero + 产品展示）
+    │   │   ├── products/       # 产品列表 / 详情
+    │   │   ├── about/          # 关于我们 / 工厂介绍
+    │   │   ├── contact/        # 联系与询盘页
+    │   │   ├── blog/           # 文章
+    │   │   ├── category/[slug]/page.tsx
+    │   │   ├── tag/[slug]/page.tsx
+    │   │   └── search/page.tsx
     │   ├── sitemap.tsx
     │   ├── robots.ts
     │   ├── api/                 # REST API
     │   │   ├── posts/route.ts
+    │   │   ├── products/route.ts
+    │   │   ├── inquiries/route.ts
     │   │   ├── search/route.ts
     │   │   └── admin/...
     │   └── admin/               # 后台管理
@@ -313,29 +387,36 @@ CMS/
     │       ├── posts/new/page.tsx
     │       ├── posts/[id]/page.tsx
     │       ├── categories/page.tsx
+    │       ├── products/page.tsx        # 产品管理
+    │       ├── products/new/page.tsx
+    │       ├── products/[id]/page.tsx
+    │       ├── product-categories/page.tsx
+    │       ├── inquiries/page.tsx       # 询盘管理
     │       ├── media/page.tsx
     │       ├── users/page.tsx
     │       └── settings/page.tsx
     ├── components/              # 通用组件
     │   ├── ui/                  # Button、Input、Modal 等基础组件
     │   ├── admin/               # 后台组件
-    │   └── front/               # 前台组件（Header、Footer、PostCard 等）
+    │   └── front/               # 前台组件（Header、Footer、ProductCard 等）
     ├── db/
     │   ├── index.ts             # 数据库连接 + schema 导出
     │   └── schema.ts            # Drizzle 表定义
     ├── services/                # 业务逻辑层
     │   ├── post.service.ts
     │   ├── category.service.ts
+    │   ├── product.service.ts   # 产品服务
+    │   ├── inquiry.service.ts   # 询盘服务
     │   ├── media.service.ts
     │   ├── auth.service.ts
     │   └── setting.service.ts
     ├── lib/
-    │   ├── auth.ts              # Auth.js 配置
+    │   ├── auth.ts              # JWT 会话
+    │   ├── i18n.ts              # 双语字典
     │   ├── permissions.ts       # 权限校验工具
-    │   ├── slugify.ts           # URL 别名生成
     │   ├── validate.ts          # Zod 校验规则
     │   └── utils.ts
-    ├── middleware.ts            # 路由守卫（可选）
+    ├── proxy.ts                 # 语言重定向（原 middleware）
     └── types/                   # 全局类型定义
 ```
 
@@ -375,6 +456,14 @@ CMS/
 - [ ] 生产环境构建与优化
 - [ ] Docker 镜像（含 SQLite 持久化卷）
 - [ ] 数据备份脚本
+
+### 阶段七：海外独立站（B2B 工厂站）
+- [x] 数据库扩展：产品 / 产品分类 / 产品图片 / 询盘表
+- [x] 中英双语：proxy 语言重定向 + 字典文件 + `[lang]` 路由结构
+- [x] 产品后台管理：产品 CRUD + 产品分类管理
+- [x] 询盘系统：前台表单 + 邮件通知 + 后台询盘管理
+- [x] 前台苹果风格改版：首页 / 产品页 / 详情页 / 关于 / 联系
+- [x] API：`/api/products`、`/api/inquiries`
 
 ---
 

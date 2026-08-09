@@ -7,11 +7,12 @@ import {
   getPublishedPostBySlug,
 } from "@/services/post.service";
 import { formatDate, decodeSlug } from "@/lib/utils";
+import { isLocale } from "@/lib/i18n";
 
 export const dynamic = "force-dynamic";
 
 interface PostPageProps {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ lang: string; slug: string }>;
 }
 
 export async function generateMetadata({
@@ -32,7 +33,8 @@ export async function generateMetadata({
 }
 
 export default async function PostPage({ params }: PostPageProps) {
-  const { slug } = await params;
+  const { lang, slug } = await params;
+  if (!isLocale(lang)) notFound();
   const post = getPublishedPostBySlug(decodeSlug(slug));
   if (!post) notFound();
 
@@ -41,13 +43,13 @@ export default async function PostPage({ params }: PostPageProps) {
   const viewCount = post.viewCount + 1; // getPublishedPostBySlug 已累加
 
   return (
-    <article>
+    <article className="max-w-3xl mx-auto px-6 py-12">
       <div className="mb-6">
-        <div className="flex items-center gap-3 text-xs text-gray-400 mb-3">
+        <div className="flex items-center gap-3 text-xs text-(--t-faint) mb-3">
           {category && (
             <Link
-              href={`/category/${category.slug}`}
-              className="text-blue-600 hover:underline"
+              href={`/${lang}/category/${category.slug}`}
+              className="text-(--t-accent) hover:underline"
             >
               {category.name}
             </Link>
@@ -56,7 +58,7 @@ export default async function PostPage({ params }: PostPageProps) {
           <span>·</span>
           <span>{viewCount} 次浏览</span>
         </div>
-        <h1 className="text-3xl font-bold text-gray-900 leading-tight">
+        <h1 className="text-3xl font-bold text-(--t-text) leading-tight">
           {post.title}
         </h1>
       </div>
@@ -71,7 +73,7 @@ export default async function PostPage({ params }: PostPageProps) {
       )}
 
       <div
-        className="prose-cms text-gray-800"
+        className="prose-cms text-(--t-text)"
         // 内容入库前已通过 sanitize-html 消毒
         dangerouslySetInnerHTML={{ __html: post.content }}
       />
@@ -81,8 +83,8 @@ export default async function PostPage({ params }: PostPageProps) {
           {tags.map((tag) => (
             <Link
               key={tag.id}
-              href={`/tag/${tag.slug}`}
-              className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-full px-3 py-1"
+              href={`/${lang}/tag/${tag.slug}`}
+              className="text-xs bg-(--t-surface3) hover:bg-(--t-border3) text-(--t-muted) rounded-full px-3 py-1"
             >
               # {tag.name}
             </Link>
@@ -91,7 +93,10 @@ export default async function PostPage({ params }: PostPageProps) {
       )}
 
       <div className="mt-8">
-        <Link href="/" className="text-sm text-gray-500 hover:text-gray-900">
+        <Link
+          href={`/${lang}`}
+          className="text-sm text-(--t-muted2) hover:text-(--t-text)"
+        >
           ← 返回首页
         </Link>
       </div>

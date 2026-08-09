@@ -9,6 +9,9 @@ import { hasPermission, PERMISSIONS, type Permission } from "@/lib/permissions";
 const NAV_ITEMS: { href: string; label: string; perm?: Permission }[] = [
   { href: "/admin", label: "仪表盘" },
   { href: "/admin/posts", label: "文章管理" },
+  { href: "/admin/products", label: "产品管理", perm: PERMISSIONS.PRODUCT_MANAGE },
+  { href: "/admin/product-categories", label: "产品分类", perm: PERMISSIONS.PRODUCT_MANAGE },
+  { href: "/admin/inquiries", label: "询盘管理", perm: PERMISSIONS.INQUIRY_MANAGE },
   { href: "/admin/categories", label: "分类管理", perm: PERMISSIONS.CATEGORY_MANAGE },
   { href: "/admin/media", label: "媒体库", perm: PERMISSIONS.MEDIA_UPLOAD },
   { href: "/admin/users", label: "用户管理", perm: PERMISSIONS.USER_MANAGE },

@@ -160,6 +160,80 @@ export const settings = sqliteTable("settings", {
   value: text("value").notNull(), // JSON 序列化
 });
 
+/** 产品分类（海外独立站） */
+export const productCategories = sqliteTable(
+  "product_categories",
+  {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    name: text("name").notNull(), // 中文名
+    nameEn: text("name_en"), // 英文名
+    slug: text("slug").notNull().unique(),
+    parentId: integer("parent_id"),
+    description: text("description"),
+    sortOrder: integer("sort_order").notNull().default(0),
+    createdAt: text("created_at")
+      .notNull()
+      .default(sql`(datetime('now'))`),
+  },
+  (t) => [index("idx_product_categories_parent").on(t.parentId)],
+);
+
+/** 产品（海外独立站） */
+export const products = sqliteTable(
+  "products",
+  {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    name: text("name").notNull(), // 中文名
+    nameEn: text("name_en"), // 英文名
+    slug: text("slug").notNull().unique(),
+    categoryId: integer("category_id"),
+    summary: text("summary"), // 中文简介
+    summaryEn: text("summary_en"), // 英文简介
+    description: text("description"), // 中文详情（HTML）
+    descriptionEn: text("description_en"), // 英文详情（HTML）
+    spec: text("spec"), // 规格参数 JSON [{label,value}]（中文）
+    specEn: text("spec_en"), // 规格参数 JSON [{label,value}]（英文）
+    coverImage: text("cover_image"),
+    images: text("images").notNull().default("[]"), // 多图 JSON 数组
+    status: text("status").notNull().default("draft"), // draft / published / archived
+    isFeatured: integer("is_featured").notNull().default(0), // 首页精选
+    viewCount: integer("view_count").notNull().default(0),
+    seoTitle: text("seo_title"),
+    seoKeywords: text("seo_keywords"),
+    createdAt: text("created_at")
+      .notNull()
+      .default(sql`(datetime('now'))`),
+    updatedAt: text("updated_at")
+      .notNull()
+      .default(sql`(datetime('now'))`),
+  },
+  (t) => [
+    index("idx_products_category").on(t.categoryId),
+    index("idx_products_status").on(t.status),
+  ],
+);
+
+/** 询盘记录（海外独立站） */
+export const inquiries = sqliteTable(
+  "inquiries",
+  {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    name: text("name").notNull(),
+    email: text("email").notNull(),
+    whatsapp: text("whatsapp"),
+    country: text("country"),
+    company: text("company"),
+    productId: integer("product_id"),
+    message: text("message"),
+    ip: text("ip"),
+    status: text("status").notNull().default("new"), // new / processing / done
+    createdAt: text("created_at")
+      .notNull()
+      .default(sql`(datetime('now'))`),
+  },
+  (t) => [index("idx_inquiries_status").on(t.status)],
+);
+
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
 export type Post = typeof posts.$inferSelect;

@@ -15,6 +15,8 @@ export const PERMISSIONS = {
   USER_MANAGE: "user:manage",
   SETTING_MANAGE: "setting:manage",
   AUDIT_VIEW: "audit:view",
+  PRODUCT_MANAGE: "product:manage",
+  INQUIRY_MANAGE: "inquiry:manage",
 } as const;
 
 export type Permission = (typeof PERMISSIONS)[keyof typeof PERMISSIONS] | "*";
@@ -32,6 +34,8 @@ const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
     PERMISSIONS.USER_MANAGE,
     PERMISSIONS.SETTING_MANAGE,
     PERMISSIONS.AUDIT_VIEW,
+    PERMISSIONS.PRODUCT_MANAGE,
+    PERMISSIONS.INQUIRY_MANAGE,
   ],
   editor: [
     PERMISSIONS.POST_CREATE,

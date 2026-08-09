@@ -14,18 +14,18 @@ export default function Pagination({
     <div className="flex items-center justify-center gap-4 mt-8">
       <Link
         href={buildHref(page - 1)}
-        className={`text-sm text-gray-600 hover:text-gray-900 ${
+        className={`text-sm text-(--t-muted) hover:text-(--t-text) ${
           page <= 1 ? "pointer-events-none opacity-40" : ""
         }`}
       >
         ← 上一页
       </Link>
-      <span className="text-sm text-gray-400">
+      <span className="text-sm text-(--t-faint)">
         {page} / {totalPages}
       </span>
       <Link
         href={buildHref(page + 1)}
-        className={`text-sm text-gray-600 hover:text-gray-900 ${
+        className={`text-sm text-(--t-muted) hover:text-(--t-text) ${
           page >= totalPages ? "pointer-events-none opacity-40" : ""
         }`}
       >
