@@ -473,7 +473,7 @@ CMS/
 2. **上传文件**：`uploads/` 目录需挂载为持久化卷（Docker 部署时），数据库文件同理。
 3. **slug 冲突**：创建内容时校验 slug 唯一性，冲突自动追加后缀。
 4. **权限前置**：后台每个 Server Action / Route Handler 必须调用 `requirePermission`，不可只做前端隐藏。
-5. **XSS 防护**：富文本内容展示时进行消毒处理（DOMPurify 服务端版），防止存储型 XSS。
+5. **XSS 防护**：富文本内容展示时通过 `sanitize-html` 进行服务端消毒，防止存储型 XSS。
 6. **备份策略**：定期 `cp data/cms.db` 并配合 `VACUUM INTO` 生成一致性快照。
 
 ---
@@ -484,12 +484,12 @@ CMS/
 # 安装依赖
 npm install
 
-# 初始化数据库
-npm run db:generate
-npm run db:migrate
+# 配置环境变量：复制模板并填写 AUTH_SECRET
+# Windows: copy .env.example .env.local
+# macOS / Linux: cp .env.example .env.local
 
-# 创建初始管理员账号
-npm run seed
+# 初始化数据库（建表、补齐字段迁移并创建默认管理员）
+npm run db:init
 
 # 启动开发服务器
 npm run dev
@@ -497,9 +497,33 @@ npm run dev
 # 访问后台 http://localhost:3000/admin
 ```
 
+> 首次初始化数据库前，可通过 `ADMIN_EMAIL` / `ADMIN_PASSWORD` 环境变量指定管理员账号；未设置时使用下方默认账号。
+
 > **默认管理员账号**：首次初始化数据库且未设置 `ADMIN_EMAIL` / `ADMIN_PASSWORD` 环境变量时，系统会创建默认管理员：  
 > 邮箱 `admin@example.com`，密码 `admin123`。  
 > **生产环境务必通过环境变量设置管理员账号密码，并立即更换默认密码。**
+
+---
+
+## 11. 参与贡献
+
+欢迎提交 Issue 与 Pull Request：
+
+1. Fork 本仓库并基于 `main` 创建功能分支
+2. 提交前确保通过检查：
+   ```bash
+   npx tsc --noEmit
+   npx eslint src
+   ```
+3. 在 PR 中说明改动背景、实现方式与验证结果
+
+> 提交代码前请确认未包含 `.env.local`、`data/`、`uploads/` 等本地数据与密钥，这些文件已被 `.gitignore` 排除。
+
+---
+
+## 12. 许可证
+
+本项目基于 [MIT License](./LICENSE) 开源，Copyright (c) 2026 tengfeizero。
 
 ---
 
