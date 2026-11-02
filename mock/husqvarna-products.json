@@ -1,0 +1,377 @@
+{
+  "source": "https://www.husqvarna.com/us/",
+  "note": "从 Husqvarna 美国官网公开页面采集的产品数据（名称/规格/图片），用于本站测试。中文内容为本站翻译补充。",
+  "categories": [
+    {
+      "name": "链锯",
+      "nameEn": "Chainsaws",
+      "slug": "chainsaws",
+      "description": "专业与家用燃油、电池链锯，涵盖伐木、造材、劈柴等场景。",
+      "sortOrder": 1,
+      "products": [
+        {
+          "name": "460 Rancher（牧场主）",
+          "nameEn": "460 Rancher",
+          "slug": "460-rancher",
+          "summary": "强劲的燃油链锯，适合伐木、劈柴与农场作业。X-TORQ 发动机扭矩大、油耗低。",
+          "summaryEn": "Powerful gas chainsaw for felling, bucking and firewood cutting. X-TORQ engine delivers high torque with low fuel consumption.",
+          "description": "<p>460 Rancher 是农场主和自用木材加工的可靠选择。配备富斯华 X-TORQ 发动机，提供更高扭矩和更低油耗与排放，Air Injection 离心式空气滤清系统有效延长使用寿命。</p><ul><li>大扭矩 X-TORQ 发动机</li><li>自动油泵与多档位供油调节</li><li>低振动设计，操作舒适</li><li>加强型减震系统</li></ul>",
+          "descriptionEn": "<p>The 460 Rancher is a reliable choice for farmers and self-use timber processing. Featuring the Husqvarna X-TORQ engine, it delivers higher torque with lower fuel consumption and emissions, while the Air Injection centrifugal air cleaning system extends service life.</p><ul><li>High torque X-TORQ engine</li><li>Automatic oil pump with adjustable flow</li><li>Low vibration design for comfortable operation</li><li>Reinforced anti-vibration system</li></ul>",
+          "spec": [
+            { "label": "气缸排量", "value": "60.3 cm³" },
+            { "label": "输出功率", "value": "3.62 hp" },
+            { "label": "导板长度", "value": "18-28 in" },
+            { "label": "重量", "value": "6.4 kg" }
+          ],
+          "specEn": [
+            { "label": "Cylinder displacement", "value": "60.3 cm³" },
+            { "label": "Output shaft power", "value": "3.62 hp" },
+            { "label": "Bar length", "value": "18-28 in" },
+            { "label": "Weight", "value": "6.4 kg" }
+          ],
+          "coverImage": "https://aka.doubaocdn.com/s/KE8HO5dILm",
+          "images": [],
+          "status": "published",
+          "isFeatured": 1
+        },
+        {
+          "name": "550 XP Mark II",
+          "nameEn": "550 XP Mark II",
+          "slug": "550-xp-mark-ii",
+          "summary": "专业级林场链锯，获奖无数的 XP 系列。功率重量比出色，是职业伐木工的首选。",
+          "summaryEn": "Professional forest chainsaw from the award-winning XP series. Outstanding power-to-weight ratio, the first choice of professional loggers.",
+          "description": "<p>550 XP Mark II 是专业伐木工信赖的伙伴。新一代 X-TORQ 发动机配合 AutoTune 自动调校系统，无论海拔和温度变化都能保持最佳性能。</p><ul><li>AutoTune 自动调校，无需手动调整化油器</li><li>低至 4.4 kg 的轻量化设计</li><li>新一代空气滤清系统，维护周期更长</li></ul>",
+          "descriptionEn": "<p>The 550 XP Mark II is the trusted partner of professional loggers. The new-generation X-TORQ engine combined with the AutoTune system maintains optimal performance regardless of altitude and temperature changes.</p><ul><li>AutoTune automatic tuning, no manual carburetor adjustment</li><li>Lightweight design from only 4.4 kg</li><li>New generation air filter system for longer maintenance intervals</li></ul>",
+          "spec": [
+            { "label": "气缸排量", "value": "50.1 cm³" },
+            { "label": "输出功率", "value": "4 hp" },
+            { "label": "导板长度", "value": "15-20 in" },
+            { "label": "重量", "value": "4.4 kg" }
+          ],
+          "specEn": [
+            { "label": "Cylinder displacement", "value": "50.1 cm³" },
+            { "label": "Output shaft power", "value": "4 hp" },
+            { "label": "Bar length", "value": "15-20 in" },
+            { "label": "Weight", "value": "4.4 kg" }
+          ],
+          "coverImage": "https://aka.doubaocdn.com/s/JbfuqHyBV5",
+          "images": [],
+          "status": "published",
+          "isFeatured": 1
+        },
+        {
+          "name": "545 Mark II 专业链锯",
+          "nameEn": "545 Mark II",
+          "slug": "545-mark-ii",
+          "summary": "为专业砍伐与造材设计的链锯，平衡性与耐用性俱佳，适用于长时间作业。",
+          "summaryEn": "A chainsaw designed for professional felling and bucking, offering excellent balance and durability for long working sessions.",
+          "description": "<p>545 Mark II 专为高强度的砍伐与造材作业打造，兼顾动力与操控性，配备加长导板后可应对大型原木。</p><ul><li>出色的平衡性设计</li><li>坚固耐用的工程结构</li><li>适用于连续长时间作业</li></ul>",
+          "descriptionEn": "<p>The 545 Mark II is built for demanding felling and bucking work, balancing power and control. With an extended bar it handles large logs with ease.</p><ul><li>Excellent balance</li><li>Robust and durable construction</li><li>Suitable for continuous long working sessions</li></ul>",
+          "spec": [
+            { "label": "气缸排量", "value": "50.1 cm³" },
+            { "label": "输出功率", "value": "3.6 hp" },
+            { "label": "导板长度", "value": "16-24 in" },
+            { "label": "重量", "value": "5.3 kg" }
+          ],
+          "specEn": [
+            { "label": "Cylinder displacement", "value": "50.1 cm³" },
+            { "label": "Output shaft power", "value": "3.6 hp" },
+            { "label": "Bar length", "value": "16-24 in" },
+            { "label": "Weight", "value": "5.3 kg" }
+          ],
+          "coverImage": "https://aka.doubaocdn.com/s/PNIGJPs2ju",
+          "images": [],
+          "status": "published",
+          "isFeatured": 0
+        },
+        {
+          "name": "435 家用链锯",
+          "nameEn": "435",
+          "slug": "435",
+          "summary": "轻巧易用的家用链锯，Smart Start 智能启动技术让点火轻松可靠。",
+          "summaryEn": "Light and easy-to-use residential chainsaw with Smart Start technology for effortless, reliable starting.",
+          "description": "<p>435 是家庭园艺与庭院维护的理想选择。Smart Start 技术大幅降低启动阻力，LowVib 低振动系统提升使用舒适度。</p><ul><li>Smart Start 智能启动</li><li>LowVib 低振动系统</li><li>Air Injection 空气滤清系统</li></ul>",
+          "descriptionEn": "<p>The 435 is the ideal choice for home gardening and yard maintenance. Smart Start technology greatly reduces starting resistance and the LowVib system improves comfort.</p><ul><li>Smart Start technology</li><li>LowVib anti-vibration system</li><li>Air Injection air cleaning system</li></ul>",
+          "spec": [
+            { "label": "气缸排量", "value": "40.9 cm³" },
+            { "label": "输出功率", "value": "2.2 hp" },
+            { "label": "导板长度", "value": "16-18 in" },
+            { "label": "重量", "value": "4.7 kg" }
+          ],
+          "specEn": [
+            { "label": "Cylinder displacement", "value": "40.9 cm³" },
+            { "label": "Output shaft power", "value": "2.2 hp" },
+            { "label": "Bar length", "value": "16-18 in" },
+            { "label": "Weight", "value": "4.7 kg" }
+          ],
+          "coverImage": "https://aka.doubaocdn.com/s/7IAxhPB0W5",
+          "images": [],
+          "status": "published",
+          "isFeatured": 0
+        },
+        {
+          "name": "450S Rancher（牧场主）",
+          "nameEn": "450S Rancher",
+          "slug": "450s-rancher",
+          "summary": "针对农场与庄园场景优化的链锯，动力充沛、易于维护，适合日常粗重作业。",
+          "summaryEn": "A chainsaw optimized for farm and estate use, powerful and easy to maintain, built for daily heavy-duty tasks.",
+          "description": "<p>450S Rancher 为大面积割伐与农场日常作业而生，结构坚固，维护方便，是牧场主信赖的作业工具。</p><ul><li>坚固耐用的机身材质</li><li>Easy-start 启动技术</li><li>便于维护的模块化设计</li></ul>",
+          "descriptionEn": "<p>The 450S Rancher is built for large-scale cutting and daily farm work. Its robust construction and easy maintenance make it a trusted tool for ranchers.</p><ul><li>Durable body construction</li><li>Easy-start technology</li><li>Modular design for easy maintenance</li></ul>",
+          "spec": [
+            { "label": "气缸排量", "value": "50.2 cm³" },
+            { "label": "输出功率", "value": "3.2 hp" },
+            { "label": "导板长度", "value": "16-20 in" },
+            { "label": "重量", "value": "5.5 kg" }
+          ],
+          "specEn": [
+            { "label": "Cylinder displacement", "value": "50.2 cm³" },
+            { "label": "Output shaft power", "value": "3.2 hp" },
+            { "label": "Bar length", "value": "16-20 in" },
+            { "label": "Weight", "value": "5.5 kg" }
+          ],
+          "coverImage": "https://aka.doubaocdn.com/s/fjqsPguixU",
+          "images": [],
+          "status": "published",
+          "isFeatured": 0
+        },
+        {
+          "name": "350i Power Axe（40V 电池）",
+          "nameEn": "350i Power Axe (battery and charger included)",
+          "slug": "350i-power-axe",
+          "summary": "轻量化电池链锯，40V 平台供电，零排放、低噪音，居家庭院修剪更省心。",
+          "summaryEn": "Lightweight battery chainsaw powered by the 40V platform, zero emissions and low noise for hassle-free home yard trimming.",
+          "description": "<p>350i Power Axe 让修剪变得轻松：无需拉绳启动、无需燃油，一键按下即可切割。轻量化设计配合 40V 电池平台，随取随用。</p><ul><li>40V 电池平台，与同系列工具通用</li><li>一键启动，零排放低噪音</li><li>轻量化紧凑设计</li></ul>",
+          "descriptionEn": "<p>The 350i Power Axe makes trimming easy: no pull-start, no fuel, just press a button and cut. Its lightweight design runs on the 40V battery platform.</p><ul><li>40V battery platform, shared with other tools in the series</li><li>Push-button start, zero emissions, low noise</li><li>Lightweight and compact design</li></ul>",
+          "spec": [
+            { "label": "电池电压", "value": "40 V" },
+            { "label": "输出功率", "value": "1.9 hp" },
+            { "label": "导板长度", "value": "14 in" },
+            { "label": "电池", "value": "含电池与充电器" }
+          ],
+          "specEn": [
+            { "label": "Battery voltage", "value": "40 V" },
+            { "label": "Output shaft power", "value": "1.9 hp" },
+            { "label": "Bar length", "value": "14 in" },
+            { "label": "Battery", "value": "Battery and charger included" }
+          ],
+          "coverImage": "https://aka.doubaocdn.com/s/Ufl5uVg9V3",
+          "images": [],
+          "status": "published",
+          "isFeatured": 0
+        },
+        {
+          "name": "T525 修枝链锯",
+          "nameEn": "T525",
+          "slug": "t525",
+          "summary": "轻量顶部手柄链锯，专为高空修枝与精细作业设计，单手操控灵活。",
+          "summaryEn": "Lightweight top-handle chainsaw designed for aerial pruning and precise work, with flexible one-hand control.",
+          "description": "<p>T525 采用顶部手柄设计，重量仅 2.7 kg，适合职业园林师进行高空修枝、断枝等精细作业。</p><ul><li>轻量化顶部手柄设计</li><li>出色的功率重量比</li><li>低振动，适合长时间精细作业</li></ul>",
+          "descriptionEn": "<p>The T525 features a top-handle design weighing only 2.7 kg, ideal for professional arborists performing aerial pruning and sectioning.</p><ul><li>Lightweight top-handle design</li><li>Excellent power-to-weight ratio</li><li>Low vibration for long precision work</li></ul>",
+          "spec": [
+            { "label": "气缸排量", "value": "27 cm³" },
+            { "label": "输出功率", "value": "1.48 hp" },
+            { "label": "导板长度", "value": "14-16 in" },
+            { "label": "重量", "value": "2.7 kg" }
+          ],
+          "specEn": [
+            { "label": "Cylinder displacement", "value": "27 cm³" },
+            { "label": "Output shaft power", "value": "1.48 hp" },
+            { "label": "Bar length", "value": "14-16 in" },
+            { "label": "Weight", "value": "2.7 kg" }
+          ],
+          "coverImage": "https://aka.doubaocdn.com/s/eV3p7cx5SM",
+          "images": [],
+          "status": "published",
+          "isFeatured": 0
+        }
+      ]
+    },
+    {
+      "name": "推式割草机",
+      "nameEn": "Push Lawn Mowers",
+      "slug": "push-lawn-mowers",
+      "description": "自走式与手推式割草机，覆盖电池与燃油动力，适合各种草坪养护。",
+      "sortOrder": 2,
+      "products": [
+        {
+          "name": "Lawn Xpert LE-322R（40V 电池）",
+          "nameEn": "Lawn Xpert LE-322R (battery and charger included)",
+          "slug": "lawn-xpert-le-322r",
+          "summary": "40V 电池自走割草机，切割浓密草丛更省力 30%，支持碎草、集草、侧排三合一。",
+          "summaryEn": "40V battery self-propelled mower that cuts thick grass 30% easier, with 3-in-1 mulch, rear bag and side discharge.",
+          "description": "<p>Lawn Xpert LE-322R 配备无刷电机与 40V 可互换电池平台，大扭矩刀片电机让切割浓密草丛更轻松，4 段高度调节应对不同草况。</p><ul><li>无刷电机，切割效率更高</li><li>3 合 1：碎草 / 集草 / 侧排</li><li>可互换 40V 电池平台</li><li>4 段切割高度调节</li></ul>",
+          "descriptionEn": "<p>The Lawn Xpert LE-322R features a brushless motor on the interchangeable 40V battery platform. High-torque blade motor cuts thick grass with ease, and 4-step height adjustment handles different conditions.</p><ul><li>Brushless motor for higher cutting efficiency</li><li>3-in-1: mulch / rear bag / side discharge</li><li>Interchangeable 40V battery platform</li><li>4-step cutting height adjustment</li></ul>",
+          "spec": [
+            { "label": "驱动方式", "value": "自走式" },
+            { "label": "切割方式", "value": "3合1 碎草/集草/侧排" },
+            { "label": "电池电压", "value": "40 V" },
+            { "label": "切割宽度", "value": "53 cm" }
+          ],
+          "specEn": [
+            { "label": "Drive system", "value": "Self-propelled" },
+            { "label": "Cutting methods", "value": "3-in-1 Mulch/Rear Bag/Side Discharge" },
+            { "label": "Battery voltage", "value": "40 V" },
+            { "label": "Cutting width", "value": "53 cm" }
+          ],
+          "coverImage": "https://aka.doubaocdn.com/s/MHD7Ljrnxz",
+          "images": [],
+          "status": "published",
+          "isFeatured": 1
+        },
+        {
+          "name": "W520i（40V 电池）",
+          "nameEn": "W520i",
+          "slug": "w520i",
+          "summary": "IPX4 防泼水设计电池割草机，无级变速自走，可收集、碎草、后排草。",
+          "summaryEn": "IPX4-rated battery mower with variable-speed self-propelled drive, offering collection, BioClip and rear discharge.",
+          "description": "<p>W520i 采用防泼水（IPX4）设计，无惧露水草地作业。无级变速自走驱动让推行更省力，可互换电池平台适配多种园艺工具。</p><ul><li>IPX4 防泼水设计</li><li>无级变速自走驱动</li><li>可互换 40V 电池系统</li></ul>",
+          "descriptionEn": "<p>The W520i features an IPX4 weatherproof design for dewy grass. Variable-speed self-propelled drive makes pushing effortless, and the interchangeable battery system suits a wide range of garden tools.</p><ul><li>IPX4 weatherproof design</li><li>Variable-speed self-propelled drive</li><li>Interchangeable 40V battery system</li></ul>",
+          "spec": [
+            { "label": "驱动方式", "value": "自走式，无级变速" },
+            { "label": "切割方式", "value": "集草/BioClip 碎草/后排草" },
+            { "label": "电池电压", "value": "40 V" },
+            { "label": "防水等级", "value": "IPX4" }
+          ],
+          "specEn": [
+            { "label": "Drive system", "value": "Self-propelled, variable speed" },
+            { "label": "Cutting methods", "value": "Collection/BioClip/Rear discharge" },
+            { "label": "Battery voltage", "value": "40 V" },
+            { "label": "Weatherproof", "value": "IPX4 rated" }
+          ],
+          "coverImage": "https://aka.doubaocdn.com/s/2ssNGJg3jH",
+          "images": [],
+          "status": "published",
+          "isFeatured": 0
+        },
+        {
+          "name": "W520（179cc 汽油）",
+          "nameEn": "W520",
+          "slug": "w520",
+          "summary": "搭载 179cc 川崎发动机的汽油自走割草机，大油箱支持全天作业。",
+          "summaryEn": "Gas self-propelled mower powered by a 179cc Kawasaki engine with a large fuel tank for all-day performance.",
+          "description": "<p>W520 配备强劲的 179cc 川崎发动机与大容量油箱，适合大草坪长时间作业，坚固的钢制底盘应对各种地形。</p><ul><li>179cc 川崎发动机</li><li>大容量燃油箱，全天作业</li><li>坚固钢制底盘</li></ul>",
+          "descriptionEn": "<p>The W520 is powered by a strong 179cc Kawasaki engine with a large fuel tank, ideal for large lawns and long working sessions, mounted on a robust steel chassis.</p><ul><li>179cc Kawasaki engine</li><li>Large fuel tank for all-day performance</li><li>Robust steel chassis</li></ul>",
+          "spec": [
+            { "label": "驱动方式", "value": "自走式，无级变速" },
+            { "label": "发动机", "value": "179cc 川崎" },
+            { "label": "切割方式", "value": "集草/BioClip 碎草/后排草" },
+            { "label": "切割宽度", "value": "53 cm" }
+          ],
+          "specEn": [
+            { "label": "Drive system", "value": "Self-propelled, variable speed" },
+            { "label": "Engine", "value": "179cc Kawasaki" },
+            { "label": "Cutting methods", "value": "Collection/BioClip/Rear discharge" },
+            { "label": "Cutting width", "value": "53 cm" }
+          ],
+          "coverImage": "https://aka.doubaocdn.com/s/DTlC2rhCnM",
+          "images": [],
+          "status": "published",
+          "isFeatured": 0
+        }
+      ]
+    },
+    {
+      "name": "机器人割草机",
+      "nameEn": "Robotic Lawn Mowers",
+      "slug": "robotic-lawn-mowers",
+      "description": "Automower 系列智能机器人割草机，自动规划路径，省心维护草坪。",
+      "sortOrder": 3,
+      "products": [
+        {
+          "name": "Automower 410 iQ",
+          "nameEn": "Automower 410 iQ",
+          "slug": "automower-410-iq",
+          "summary": "适合中小庭院的智能机器人割草机，可处理约 0.5 英亩草坪，支持实体线与虚拟线边界。",
+          "summaryEn": "Smart robotic mower for small to medium yards, handling up to 0.5 acres with physical and virtual wire boundary support.",
+          "description": "<p>Automower 410 iQ 让割草成为自动化：静音运行、自动返回充电、智能规划路径。通过手机 App 即可远程控制与调度。</p><ul><li>适用约 0.5 英亩草坪</li><li>支持实体线与虚拟线边界</li><li>App 远程控制与调度</li><li>低噪音自动割草</li></ul>",
+          "descriptionEn": "<p>The Automower 410 iQ automates mowing: silent operation, automatic return to charge and smart path planning. Control and schedule it remotely from your smartphone app.</p><ul><li>Mows up to 0.5 acres</li><li>Physical wire and virtual wire boundary</li><li>App remote control and scheduling</li><li>Low-noise automatic mowing</li></ul>",
+          "spec": [
+            { "label": "适用面积（±20%）", "value": "0.5 英亩" },
+            { "label": "边界方式", "value": "实体线、虚拟线" },
+            { "label": "参考价格", "value": "$2,599.99" }
+          ],
+          "specEn": [
+            { "label": "Lawn size (±20%)", "value": "0.5 acre" },
+            { "label": "Boundary type", "value": "Physical wire, Virtual wire" },
+            { "label": "Price from", "value": "$2,599.99" }
+          ],
+          "coverImage": "https://aka.doubaocdn.com/s/PUESxAXVze",
+          "images": [],
+          "status": "published",
+          "isFeatured": 1
+        },
+        {
+          "name": "Automower 420 iQ",
+          "nameEn": "Automower 420 iQ",
+          "slug": "automower-420-iq",
+          "summary": "适合中大型庭院的机器人割草机，可处理约 1 英亩草坪，切割效率更高。",
+          "summaryEn": "Robotic mower for medium to large yards, handling up to 1 acre with higher cutting efficiency.",
+          "description": "<p>Automower 420 iQ 在 410 的基础上提供更大的切割效率，覆盖约 1 英亩草坪，同样支持 App 智能管理与自动充电。</p><ul><li>适用约 1 英亩草坪</li><li>更高切割效率</li><li>App 智能管理</li></ul>",
+          "descriptionEn": "<p>The Automower 420 iQ offers greater cutting efficiency on top of the 410, covering about 1 acre of lawn with the same app-based smart management and automatic charging.</p><ul><li>Mows up to 1 acre</li><li>Higher cutting efficiency</li><li>Smart app management</li></ul>",
+          "spec": [
+            { "label": "适用面积（±20%）", "value": "1 英亩" },
+            { "label": "边界方式", "value": "实体线、虚拟线" },
+            { "label": "参考价格", "value": "$3,299.99" }
+          ],
+          "specEn": [
+            { "label": "Lawn size (±20%)", "value": "1 acre" },
+            { "label": "Boundary type", "value": "Physical wire, Virtual wire" },
+            { "label": "Price from", "value": "$3,299.99" }
+          ],
+          "coverImage": "https://aka.doubaocdn.com/s/IjeYlvejCE",
+          "images": [],
+          "status": "published",
+          "isFeatured": 0
+        },
+        {
+          "name": "Automower 440 iQ",
+          "nameEn": "Automower 440 iQ",
+          "slug": "automower-440-iq",
+          "summary": "面向大面积庭院的机器人割草机，可处理约 2 英亩草坪，高效省心。",
+          "summaryEn": "Robotic mower for large yards, handling up to 2 acres efficiently and worry-free.",
+          "description": "<p>Automower 440 iQ 覆盖约 2 英亩草坪，凭借更强的切割能力与更长的续航，是大型庭院的高效选择。</p><ul><li>适用约 2 英亩草坪</li><li>长续航高效切割</li><li>App 远程管理</li></ul>",
+          "descriptionEn": "<p>The Automower 440 iQ covers about 2 acres of lawn. With stronger cutting capability and longer runtime, it is the efficient choice for large yards.</p><ul><li>Mows up to 2 acres</li><li>Long runtime and efficient cutting</li><li>Remote management via app</li></ul>",
+          "spec": [
+            { "label": "适用面积（±20%）", "value": "2 英亩" },
+            { "label": "边界方式", "value": "虚拟线、实体线" },
+            { "label": "参考价格", "value": "$4,299.99" }
+          ],
+          "specEn": [
+            { "label": "Lawn size (±20%)", "value": "2 acre" },
+            { "label": "Boundary type", "value": "Virtual wire, Physical wire" },
+            { "label": "Price from", "value": "$4,299.99" }
+          ],
+          "coverImage": "https://aka.doubaocdn.com/s/AndyJ5xEc8",
+          "images": [],
+          "status": "published",
+          "isFeatured": 0
+        },
+        {
+          "name": "Automower 435 iQ AWD",
+          "nameEn": "Automower 435 iQ AWD",
+          "slug": "automower-435-iq-awd",
+          "summary": "全轮驱动（AWD）机器人割草机，可攀爬 70% 陡坡，适合复杂地形庭院。",
+          "summaryEn": "All-wheel-drive (AWD) robotic mower that navigates slopes up to 70%, ideal for complex terrain yards.",
+          "description": "<p>Automower 435 iQ AWD 配备全轮驱动系统，轻松应对高达 70% 的陡坡与不平整地形，智能传感器确保安全可靠运行。</p><ul><li>全轮驱动，可爬 70% 陡坡</li><li>智能传感器与安全系统</li><li>适用约 1.3 英亩草坪</li></ul>",
+          "descriptionEn": "<p>The Automower 435 iQ AWD features an all-wheel-drive system that handles slopes up to 70% and uneven terrain, with smart sensors ensuring safe and reliable operation.</p><ul><li>All-wheel drive, climbs slopes up to 70%</li><li>Smart sensors and safety systems</li><li>Mows about 1.3 acres</li></ul>",
+          "spec": [
+            { "label": "适用面积（±20%）", "value": "1.3 英亩" },
+            { "label": "边界方式", "value": "虚拟线、实体线" },
+            { "label": "驱动方式", "value": "全轮驱动 AWD" },
+            { "label": "参考价格", "value": "$4,999.99" }
+          ],
+          "specEn": [
+            { "label": "Lawn size (±20%)", "value": "1.3 acre" },
+            { "label": "Boundary type", "value": "Virtual wire, Physical wire" },
+            { "label": "Drive", "value": "All-wheel drive (AWD)" },
+            { "label": "Price from", "value": "$4,999.99" }
+          ],
+          "coverImage": "https://aka.doubaocdn.com/s/qsyOZ8tLTC",
+          "images": [],
+          "status": "published",
+          "isFeatured": 0
+        }
+      ]
+    }
+  ]
+}
