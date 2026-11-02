@@ -23,10 +23,13 @@ export async function GET(req: NextRequest) {
     items: result.items.map((p) => ({
       id: p.id,
       title: p.title,
+      titleEn: p.titleEn,
       slug: p.slug,
       excerpt: p.excerpt,
+      excerptEn: p.excerptEn,
       coverImage: p.coverImage,
       category: p.categoryName,
+      categoryEn: p.categoryNameEn,
       author: p.authorName,
       viewCount: p.viewCount,
       publishedAt: p.publishedAt,

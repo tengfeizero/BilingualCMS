@@ -8,20 +8,25 @@ import { requirePermission } from "@/services/auth.service";
 import {
   createPost,
   deletePost,
+  getPostById,
+  getPostTags,
   restoreVersion,
   sanitizeContent,
   setPostStatus,
   updatePost,
 } from "@/services/post.service";
 
-export type ActionState = { error?: string } | null;
+export type ActionState = { error?: string; ok?: boolean } | null;
 
 function parsePostInput(formData: FormData) {
   return postSchema.safeParse({
     title: formData.get("title"),
+    titleEn: formData.get("titleEn") || "",
     slug: formData.get("slug") || undefined,
     content: formData.get("content") || "",
+    contentEn: formData.get("contentEn") || "",
     excerpt: formData.get("excerpt") || "",
+    excerptEn: formData.get("excerptEn") || "",
     coverImage: formData.get("coverImage") || "",
     status: formData.get("status") || "draft",
     type: formData.get("type") || "post",
@@ -41,14 +46,26 @@ export async function createPostAction(
     return { error: parsed.error.issues[0]?.message ?? "参数错误" };
   }
   const input = parsed.data;
-  const postId = createPost(user.id, {
+  createPost(user.id, {
     ...input,
     content: sanitizeContent(input.content),
+    contentEn: sanitizeContent(input.contentEn),
   });
   revalidatePath("/");
   revalidatePath("/blog");
   revalidatePath("/admin/posts");
-  redirect(`/admin/posts/${postId}`);
+  return { ok: true };
+}
+
+/** 弹窗编辑时按需加载完整文章数据与标签 */
+export async function getPostForEditAction(id: number) {
+  await requirePermission(PERMISSIONS.POST_UPDATE);
+  const post = getPostById(id);
+  if (!post) return null;
+  const tags = getPostTags(id)
+    .map((t) => t.name)
+    .join(", ");
+  return { post, tags };
 }
 
 export async function updatePostAction(
@@ -66,12 +83,13 @@ export async function updatePostAction(
   updatePost(user.id, id, {
     ...input,
     content: sanitizeContent(input.content),
+    contentEn: sanitizeContent(input.contentEn),
   });
   revalidatePath("/");
   revalidatePath("/blog");
   revalidatePath(`/blog/${input.slug || ""}`);
   revalidatePath("/admin/posts");
-  redirect(`/admin/posts/${id}`);
+  return { ok: true };
 }
 
 export async function deletePostAction(formData: FormData) {

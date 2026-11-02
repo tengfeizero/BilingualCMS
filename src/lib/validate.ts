@@ -14,9 +14,12 @@ const emptyToNull = z.preprocess(
 
 export const postSchema = z.object({
   title: z.string().min(1, "标题不能为空").max(200, "标题不能超过 200 字"),
+  titleEn: z.string().max(200, "英文标题不能超过 200 字").optional(),
   slug: z.string().trim().optional(),
   content: z.string().default(""),
+  contentEn: z.string().default(""),
   excerpt: z.string().max(500, "摘要不能超过 500 字").optional(),
+  excerptEn: z.string().max(500, "英文摘要不能超过 500 字").optional(),
   coverImage: z.string().max(500).optional(),
   status: z.enum(POST_STATUS).default("draft"),
   type: z.enum(POST_TYPE).default("post"),
@@ -29,9 +32,11 @@ export type PostInput = z.infer<typeof postSchema>;
 
 export const categorySchema = z.object({
   name: z.string().min(1, "分类名称不能为空").max(100, "分类名称过长"),
+  nameEn: z.string().max(100, "英文分类名称过长").optional(),
   slug: z.string().trim().optional(),
   parentId: emptyToNull,
   description: z.string().max(500).optional(),
+  descriptionEn: z.string().max(500).optional(),
   sortOrder: z.coerce.number().int().default(0),
 });
 
@@ -52,6 +57,7 @@ export const productCategorySchema = z.object({
   slug: z.string().trim().optional(),
   parentId: emptyToNull,
   description: z.string().max(500).optional(),
+  descriptionEn: z.string().max(500).optional(),
   sortOrder: z.coerce.number().int().default(0),
 });
 

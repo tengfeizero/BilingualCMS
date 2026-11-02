@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import Editor from "./Editor";
 import {
   btnPrimaryCls,
@@ -13,9 +13,12 @@ import type { ActionState } from "@/app/admin/(dashboard)/posts/actions";
 export interface PostFormValue {
   id?: number;
   title?: string;
+  titleEn?: string | null;
   slug?: string;
   content?: string;
+  contentEn?: string | null;
   excerpt?: string | null;
+  excerptEn?: string | null;
   coverImage?: string | null;
   status?: string;
   type?: string;
@@ -31,6 +34,7 @@ interface PostFormProps {
   ) => Promise<ActionState>;
   initial?: PostFormValue;
   categories: { id: number; name: string; parentId: number | null }[];
+  onSaved?: () => void;
 }
 
 const STATUS_OPTIONS = [
@@ -44,9 +48,14 @@ export default function PostForm({
   action,
   initial,
   categories,
+  onSaved,
 }: PostFormProps) {
   const [state, formAction, pending] = useActionState(action, null);
   const [content, setContent] = useState(initial?.content ?? "");
+  useEffect(() => {
+    if (state?.ok) onSaved?.();
+  }, [state, onSaved]);
+  const [contentEn, setContentEn] = useState(initial?.contentEn ?? "");
   const [coverImage, setCoverImage] = useState(initial?.coverImage ?? "");
 
   return (
@@ -58,7 +67,7 @@ export default function PostForm({
         <div className="lg:col-span-2 space-y-4">
           <div>
             <label className={labelCls} htmlFor="title">
-              标题
+              标题（中文）
             </label>
             <input
               id="title"
@@ -66,14 +75,37 @@ export default function PostForm({
               required
               defaultValue={initial?.title}
               className={inputCls}
-              placeholder="请输入标题"
+              placeholder="请输入中文标题"
             />
           </div>
 
           <div>
-            <label className={labelCls}>正文</label>
+            <label className={labelCls} htmlFor="titleEn">
+              标题（英文，留空则前台英文站显示中文标题）
+            </label>
+            <input
+              id="titleEn"
+              name="titleEn"
+              defaultValue={initial?.titleEn ?? ""}
+              className={inputCls}
+              placeholder="English title (optional)"
+            />
+          </div>
+
+          <div>
+            <label className={labelCls}>正文（中文）</label>
             <Editor value={content} onChange={setContent} />
             <input type="hidden" name="content" value={content} />
+          </div>
+
+          <div>
+            <label className={labelCls}>正文（英文，留空则前台英文站显示中文正文）</label>
+            <Editor
+              value={contentEn}
+              onChange={setContentEn}
+              placeholder="Write the English version here…"
+            />
+            <input type="hidden" name="contentEn" value={contentEn} />
           </div>
         </div>
 
@@ -180,7 +212,7 @@ export default function PostForm({
 
           <div>
             <label className={labelCls} htmlFor="excerpt">
-              摘要
+              摘要（中文）
             </label>
             <textarea
               id="excerpt"
@@ -188,7 +220,21 @@ export default function PostForm({
               defaultValue={initial?.excerpt ?? ""}
               className={inputCls}
               rows={3}
-              placeholder="列表页展示的摘要，留空自动截取"
+              placeholder="列表页展示的中文摘要，留空自动截取"
+            />
+          </div>
+
+          <div>
+            <label className={labelCls} htmlFor="excerptEn">
+              摘要（英文，留空则英文站显示中文摘要）
+            </label>
+            <textarea
+              id="excerptEn"
+              name="excerptEn"
+              defaultValue={initial?.excerptEn ?? ""}
+              className={inputCls}
+              rows={3}
+              placeholder="English excerpt shown on listing pages"
             />
           </div>
 

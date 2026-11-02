@@ -9,7 +9,11 @@ export default async function CategoriesPage() {
   await requirePermission(PERMISSIONS.CATEGORY_MANAGE);
   const categories = listCategories();
   const tree = buildCategoryTree(categories);
-  const parentOptions = categories.map((c) => ({ id: c.id, name: c.name }));
+  const parentOptions = categories.map((c) => ({
+    id: c.id,
+    name: c.name,
+    nameEn: c.nameEn,
+  }));
 
   return <CategoryManager tree={tree} parentOptions={parentOptions} />;
 }

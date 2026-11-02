@@ -8,10 +8,11 @@ import { requirePermission } from "@/services/auth.service";
 import {
   createProduct,
   deleteProduct,
+  getProductById,
   updateProduct,
 } from "@/services/product.service";
 
-export type ProductState = { error?: string } | null;
+export type ProductState = { error?: string; ok?: boolean } | null;
 
 function parseProductInput(formData: FormData) {
   return productSchema.safeParse({
@@ -43,13 +44,21 @@ export async function createProductAction(
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "参数错误" };
   }
-  let id: number;
   try {
-    id = createProduct(user.id, parsed.data);
+    createProduct(user.id, parsed.data);
+    revalidatePath("/admin/products");
+    revalidatePath("/zh");
+    revalidatePath("/en");
   } catch (err) {
     return { error: err instanceof Error ? err.message : "创建失败" };
   }
-  redirect(`/admin/products/${id}`);
+  return { ok: true };
+}
+
+/** 弹窗编辑时按需加载完整产品数据 */
+export async function getProductForEditAction(id: number) {
+  await requirePermission(PERMISSIONS.PRODUCT_MANAGE);
+  return getProductById(id);
 }
 
 export async function updateProductAction(
@@ -71,7 +80,7 @@ export async function updateProductAction(
   } catch (err) {
     return { error: err instanceof Error ? err.message : "保存失败" };
   }
-  return null;
+  return { ok: true };
 }
 
 export async function deleteProductAction(formData: FormData) {

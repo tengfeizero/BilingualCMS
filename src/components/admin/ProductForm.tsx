@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import {
   btnPrimaryCls,
   FormError,
@@ -33,6 +33,7 @@ interface ProductFormProps {
   action: (prev: ProductState, formData: FormData) => Promise<ProductState>;
   initial?: ProductFormValue;
   categories: { id: number; name: string; nameEn: string | null }[];
+  onSaved?: () => void;
 }
 
 const STATUS_OPTIONS = [
@@ -45,9 +46,13 @@ export default function ProductForm({
   action,
   initial,
   categories,
+  onSaved,
 }: ProductFormProps) {
   const [state, formAction, pending] = useActionState(action, null);
   const [coverImage, setCoverImage] = useState(initial?.coverImage ?? "");
+  useEffect(() => {
+    if (state?.ok) onSaved?.();
+  }, [state, onSaved]);
   const [images, setImages] = useState<string[]>(
     (() => {
       try {

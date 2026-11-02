@@ -35,6 +35,7 @@ export interface ProductCategoryInput {
   slug?: string;
   parentId?: number | null;
   description?: string | null;
+  descriptionEn?: string | null;
   sortOrder?: number;
 }
 
@@ -48,6 +49,7 @@ export function createProductCategory(input: ProductCategoryInput): number {
       slug,
       parentId: input.parentId ?? null,
       description: input.description || null,
+      descriptionEn: input.descriptionEn || null,
       sortOrder: input.sortOrder ?? 0,
     })
     .run();
@@ -62,6 +64,7 @@ export function updateProductCategory(id: number, input: ProductCategoryInput) {
       slug: slugify(input.slug || input.name),
       parentId: input.parentId ?? null,
       description: input.description || null,
+      descriptionEn: input.descriptionEn || null,
       sortOrder: input.sortOrder ?? 0,
     })
     .where(eq(productCategories.id, id))

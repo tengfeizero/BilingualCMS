@@ -4,12 +4,15 @@ import { paginate } from "@/lib/utils";
 interface SearchResultItem {
   id: number;
   title: string;
+  title_en: string | null;
   slug: string;
   excerpt: string | null;
+  excerpt_en: string | null;
   cover_image: string | null;
   published_at: string | null;
   view_count: number;
   category_name: string | null;
+  category_name_en: string | null;
   category_slug: string | null;
   author_name: string | null;
 }
@@ -40,9 +43,10 @@ export function searchPosts(
 
   const items = sqlite
     .prepare(
-      `SELECT p.id, p.title, p.slug, p.excerpt, p.cover_image, p.published_at,
-              p.view_count, c.name AS category_name, c.slug AS category_slug,
-              u.username AS author_name
+      `SELECT p.id, p.title, p.title_en, p.slug, p.excerpt, p.excerpt_en,
+              p.cover_image, p.published_at, p.view_count,
+              c.name AS category_name, c.name_en AS category_name_en,
+              c.slug AS category_slug, u.username AS author_name
        FROM posts_fts f
        JOIN posts p ON p.id = f.rowid
        LEFT JOIN categories c ON p.category_id = c.id

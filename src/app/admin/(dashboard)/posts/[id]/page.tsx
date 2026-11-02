@@ -97,9 +97,12 @@ export default async function EditPostPage({
         initial={{
           id: post.id,
           title: post.title,
+          titleEn: post.titleEn,
           slug: post.slug,
           content: post.content,
+          contentEn: post.contentEn,
           excerpt: post.excerpt,
+          excerptEn: post.excerptEn,
           coverImage: post.coverImage,
           status: post.status,
           type: post.type,

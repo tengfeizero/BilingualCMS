@@ -18,15 +18,18 @@ interface PostPageProps {
 export async function generateMetadata({
   params,
 }: PostPageProps): Promise<Metadata> {
-  const { slug } = await params;
+  const { lang, slug } = await params;
   const post = getPublishedPostBySlug(decodeSlug(slug));
   if (!post) return { title: "文章不存在" };
+  const title = (lang === "en" && post.titleEn) || post.title;
+  const description =
+    (lang === "en" && post.excerptEn) || post.excerpt || undefined;
   return {
-    title: post.title,
-    description: post.excerpt ?? undefined,
+    title,
+    description,
     openGraph: {
-      title: post.title,
-      description: post.excerpt ?? undefined,
+      title,
+      description,
       images: post.coverImage ? [{ url: post.coverImage }] : undefined,
     },
   };
@@ -38,8 +41,14 @@ export default async function PostPage({ params }: PostPageProps) {
   const post = getPublishedPostBySlug(decodeSlug(slug));
   if (!post) notFound();
 
+  const isEn = lang === "en";
+  const title = (isEn && post.titleEn) || post.title;
+  const content = (isEn && post.contentEn) || post.content;
   const tags = getPostTags(post.id);
   const category = post.categoryId ? getCategoryById(post.categoryId) : null;
+  const categoryName = category
+    ? (isEn && category.nameEn) || category.name
+    : null;
   const viewCount = post.viewCount + 1; // getPublishedPostBySlug 已累加
 
   return (
@@ -51,15 +60,17 @@ export default async function PostPage({ params }: PostPageProps) {
               href={`/${lang}/category/${category.slug}`}
               className="text-(--t-accent) hover:underline"
             >
-              {category.name}
+              {categoryName}
             </Link>
           )}
           <span>{formatDate(post.publishedAt ?? post.createdAt)}</span>
           <span>·</span>
-          <span>{viewCount} 次浏览</span>
+          <span>
+            {viewCount} {isEn ? "views" : "次浏览"}
+          </span>
         </div>
         <h1 className="text-3xl font-bold text-(--t-text) leading-tight">
-          {post.title}
+          {title}
         </h1>
       </div>
 
@@ -67,7 +78,7 @@ export default async function PostPage({ params }: PostPageProps) {
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={post.coverImage}
-          alt={post.title}
+          alt={title}
           className="w-full max-h-96 object-cover rounded-lg mb-6"
         />
       )}
@@ -75,7 +86,7 @@ export default async function PostPage({ params }: PostPageProps) {
       <div
         className="prose-cms text-(--t-text)"
         // 内容入库前已通过 sanitize-html 消毒
-        dangerouslySetInnerHTML={{ __html: post.content }}
+        dangerouslySetInnerHTML={{ __html: content }}
       />
 
       {tags.length > 0 && (
@@ -97,7 +108,7 @@ export default async function PostPage({ params }: PostPageProps) {
           href={`/${lang}`}
           className="text-sm text-(--t-muted2) hover:text-(--t-text)"
         >
-          ← 返回首页
+          ← {lang === "en" ? "Back to Home" : "返回首页"}
         </Link>
       </div>
     </article>

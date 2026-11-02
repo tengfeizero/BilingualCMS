@@ -44,9 +44,12 @@ export function sanitizeContent(html: string): string {
 
 export interface PostInput {
   title: string;
+  titleEn?: string;
   slug?: string;
   content?: string;
+  contentEn?: string;
   excerpt?: string | null;
+  excerptEn?: string | null;
   coverImage?: string | null;
   status?: string;
   type?: string;
@@ -94,10 +97,10 @@ function syncTags(
 ) {
   tx.delete(postTags).where(eq(postTags.postId, postId)).run();
   for (const name of parseTagNames(tagsStr)) {
-    let tag = tx.select().from(tags).where(eq(tags.name, name)).get();
+    const tag = tx.select().from(tags).where(eq(tags.name, name)).get();
     let tagId: number;
     if (!tag) {
-      let slug = slugify(name);
+      const slug = slugify(name);
       let candidate = slug;
       let counter = 2;
       while (tx.select({ id: tags.id }).from(tags).where(eq(tags.slug, candidate)).get()) {
@@ -130,8 +133,11 @@ export function listPosts(params: ListPostsParams = {}) {
     conditions.push(
       or(
         like(posts.title, `%${params.keyword}%`),
+        like(posts.titleEn, `%${params.keyword}%`),
         like(posts.excerpt, `%${params.keyword}%`),
+        like(posts.excerptEn, `%${params.keyword}%`),
         like(posts.content, `%${params.keyword}%`),
+        like(posts.contentEn, `%${params.keyword}%`),
       ),
     );
   }
@@ -141,13 +147,16 @@ export function listPosts(params: ListPostsParams = {}) {
     .select({
       id: posts.id,
       title: posts.title,
+      titleEn: posts.titleEn,
       slug: posts.slug,
       excerpt: posts.excerpt,
+      excerptEn: posts.excerptEn,
       coverImage: posts.coverImage,
       status: posts.status,
       type: posts.type,
       categoryId: posts.categoryId,
       categoryName: categories.name,
+      categoryNameEn: categories.nameEn,
       categorySlug: categories.slug,
       authorName: users.username,
       isPinned: posts.isPinned,
@@ -188,8 +197,10 @@ export function listPostsByTag(tagSlug: string, page = 1, pageSize = 10) {
     .select({
       id: posts.id,
       title: posts.title,
+      titleEn: posts.titleEn,
       slug: posts.slug,
       excerpt: posts.excerpt,
+      excerptEn: posts.excerptEn,
       coverImage: posts.coverImage,
       publishedAt: posts.publishedAt,
       viewCount: posts.viewCount,
@@ -246,9 +257,12 @@ export function createPost(userId: number, input: PostInput): number {
       .insert(posts)
       .values({
         title: input.title,
+        titleEn: input.titleEn || null,
         slug: finalSlug,
         content: input.content ?? "",
+        contentEn: input.contentEn ?? "",
         excerpt: input.excerpt || null,
+        excerptEn: input.excerptEn || null,
         coverImage: input.coverImage || null,
         status: input.status ?? "draft",
         type: input.type ?? "post",
@@ -261,7 +275,14 @@ export function createPost(userId: number, input: PostInput): number {
     const id = Number(result.lastInsertRowid);
     syncTags(tx, id, input.tags);
     tx.insert(postVersions)
-      .values({ postId: id, title: input.title, content: input.content ?? "", editorId: userId })
+      .values({
+        postId: id,
+        title: input.title,
+        titleEn: input.titleEn || null,
+        content: input.content ?? "",
+        contentEn: input.contentEn ?? "",
+        editorId: userId,
+      })
       .run();
     return id;
   });
@@ -287,9 +308,15 @@ export function updatePost(userId: number, id: number, input: PostInput) {
     tx.update(posts)
       .set({
         title: input.title,
+        titleEn: input.titleEn !== undefined ? input.titleEn || null : existing.titleEn,
         slug: finalSlug,
         content: input.content ?? existing.content,
+        contentEn: input.contentEn ?? existing.contentEn,
         excerpt: input.excerpt !== undefined ? input.excerpt || null : existing.excerpt,
+        excerptEn:
+          input.excerptEn !== undefined
+            ? input.excerptEn || null
+            : existing.excerptEn,
         coverImage: input.coverImage !== undefined ? input.coverImage || null : existing.coverImage,
         status: input.status ?? existing.status,
         type: input.type ?? existing.type,
@@ -306,7 +333,9 @@ export function updatePost(userId: number, id: number, input: PostInput) {
       .values({
         postId: id,
         title: input.title,
+        titleEn: input.titleEn !== undefined ? input.titleEn || null : existing.titleEn,
         content: input.content ?? existing.content,
+        contentEn: input.contentEn ?? existing.contentEn,
         editorId: userId,
       })
       .run();
@@ -375,7 +404,9 @@ export function restoreVersion(userId: number, versionId: number) {
   if (!version) throw new Error("版本不存在");
   updatePost(userId, version.postId, {
     title: version.title,
+    titleEn: version.titleEn ?? "",
     content: version.content,
+    contentEn: version.contentEn ?? "",
   });
   return version.postId;
 }

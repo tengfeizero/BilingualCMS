@@ -22,17 +22,24 @@ export default async function TagPage({
 
   const { items, total, tag } = listPostsByTag(decodeSlug(slug), page, pageSize);
   if (!tag) notFound();
+  const isEn = lang === "en";
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
 
   return (
     <div className="max-w-3xl mx-auto px-6 py-12">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-(--t-text)">标签：{tag.name}</h1>
-        <p className="text-sm text-(--t-muted2) mt-1">共 {total} 篇文章</p>
+        <h1 className="text-2xl font-bold text-(--t-text)">
+          {isEn ? "Tag" : "标签"}：{tag.name}
+        </h1>
+        <p className="text-sm text-(--t-muted2) mt-1">
+          {isEn ? `${total} articles` : `共 ${total} 篇文章`}
+        </p>
       </div>
 
       {items.length === 0 ? (
-        <div className="text-center py-20 text-(--t-faint)">该标签下暂无文章</div>
+        <div className="text-center py-20 text-(--t-faint)">
+          {isEn ? "No articles with this tag yet" : "该标签下暂无文章"}
+        </div>
       ) : (
         <div className="space-y-4">
           {items.map((post) => (

@@ -63,9 +63,11 @@ export function createCategory(userId: number, input: CategoryInput) {
     .insert(categories)
     .values({
       name: input.name,
+      nameEn: input.nameEn || null,
       slug: finalSlug,
       parentId: input.parentId ?? null,
       description: input.description || null,
+      descriptionEn: input.descriptionEn || null,
       sortOrder: input.sortOrder ?? 0,
     })
     .run();
@@ -89,9 +91,14 @@ export function updateCategory(userId: number, id: number, input: CategoryInput)
   db.update(categories)
     .set({
       name: input.name,
+      nameEn: input.nameEn !== undefined ? input.nameEn || null : existing.nameEn,
       slug: finalSlug,
       parentId: input.parentId ?? existing.parentId,
       description: input.description ?? existing.description,
+      descriptionEn:
+        input.descriptionEn !== undefined
+          ? input.descriptionEn || null
+          : existing.descriptionEn,
       sortOrder: input.sortOrder ?? existing.sortOrder,
     })
     .where(eq(categories.id, id))

@@ -11,14 +11,16 @@ import {
   updateCategory,
 } from "@/services/category.service";
 
-export type CategoryState = { error?: string } | null;
+export type CategoryState = { error?: string; ok?: boolean } | null;
 
 function parseCategoryInput(formData: FormData) {
   return categorySchema.safeParse({
     name: formData.get("name"),
+    nameEn: formData.get("nameEn") || "",
     slug: formData.get("slug") || undefined,
     parentId: formData.get("parentId") || null,
     description: formData.get("description") || "",
+    descriptionEn: formData.get("descriptionEn") || "",
     sortOrder: formData.get("sortOrder") || "0",
   });
 }
@@ -34,7 +36,7 @@ export async function createCategoryAction(
   }
   createCategory(user.id, parsed.data);
   revalidatePath("/admin/categories");
-  return null;
+  return { ok: true };
 }
 
 export async function updateCategoryAction(
@@ -51,7 +53,7 @@ export async function updateCategoryAction(
   updateCategory(user.id, id, parsed.data);
   revalidatePath("/admin/categories");
   revalidatePath("/");
-  return null;
+  return { ok: true };
 }
 
 export async function deleteCategoryAction(formData: FormData) {

@@ -33,9 +33,11 @@ export const categories = sqliteTable(
   {
     id: integer("id").primaryKey({ autoIncrement: true }),
     name: text("name").notNull(),
+    nameEn: text("name_en"),
     slug: text("slug").notNull().unique(),
     parentId: integer("parent_id"),
     description: text("description"),
+    descriptionEn: text("description_en"),
     sortOrder: integer("sort_order").notNull().default(0),
     createdAt: text("created_at")
       .notNull()
@@ -57,9 +59,12 @@ export const posts = sqliteTable(
   {
     id: integer("id").primaryKey({ autoIncrement: true }),
     title: text("title").notNull(),
+    titleEn: text("title_en"),
     slug: text("slug").notNull().unique(),
     content: text("content").notNull().default(""),
+    contentEn: text("content_en").notNull().default(""),
     excerpt: text("excerpt"),
+    excerptEn: text("excerpt_en"),
     coverImage: text("cover_image"),
     status: text("status").notNull().default("draft"), // draft / pending / published / archived
     type: text("type").notNull().default("post"), // post / page
@@ -105,7 +110,9 @@ export const postVersions = sqliteTable(
       .notNull()
       .references(() => posts.id, { onDelete: "cascade" }),
     title: text("title").notNull(),
+    titleEn: text("title_en"),
     content: text("content").notNull(),
+    contentEn: text("content_en"),
     editorId: integer("editor_id"),
     createdAt: text("created_at")
       .notNull()
@@ -170,6 +177,7 @@ export const productCategories = sqliteTable(
     slug: text("slug").notNull().unique(),
     parentId: integer("parent_id"),
     description: text("description"),
+    descriptionEn: text("description_en"),
     sortOrder: integer("sort_order").notNull().default(0),
     createdAt: text("created_at")
       .notNull()

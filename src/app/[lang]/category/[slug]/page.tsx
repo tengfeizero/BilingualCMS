@@ -24,6 +24,10 @@ export default async function CategoryPage({
   const categorySlug = decodeSlug(slug);
   const category = getCategoryBySlug(categorySlug);
   if (!category) notFound();
+  const isEn = lang === "en";
+  const categoryName = (isEn && category.nameEn) || category.name;
+  const categoryDescription =
+    (isEn && category.descriptionEn) || category.description;
 
   const { items, total } = listPosts({
     page,
@@ -36,12 +40,21 @@ export default async function CategoryPage({
   return (
     <div className="max-w-3xl mx-auto px-6 py-12">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-(--t-text)">分类：{category.name}</h1>
-        <p className="text-sm text-(--t-muted2) mt-1">共 {total} 篇文章</p>
+        <h1 className="text-2xl font-bold text-(--t-text)">
+          {isEn ? "Category" : "分类"}：{categoryName}
+        </h1>
+        {categoryDescription && (
+          <p className="text-sm text-(--t-muted2) mt-2">{categoryDescription}</p>
+        )}
+        <p className="text-sm text-(--t-muted2) mt-1">
+          {isEn ? `${total} articles` : `共 ${total} 篇文章`}
+        </p>
       </div>
 
       {items.length === 0 ? (
-        <div className="text-center py-20 text-(--t-faint)">该分类下暂无文章</div>
+        <div className="text-center py-20 text-(--t-faint)">
+          {isEn ? "No articles in this category yet" : "该分类下暂无文章"}
+        </div>
       ) : (
         <div className="space-y-4">
           {items.map((post) => (

@@ -31,13 +31,15 @@ CREATE TABLE IF NOT EXISTS roles (
 );
 
 CREATE TABLE IF NOT EXISTS categories (
-  id          INTEGER PRIMARY KEY AUTOINCREMENT,
-  name        TEXT NOT NULL,
-  slug        TEXT NOT NULL UNIQUE,
-  parent_id   INTEGER REFERENCES categories(id) ON DELETE SET NULL,
-  description TEXT,
-  sort_order  INTEGER NOT NULL DEFAULT 0,
-  created_at  TEXT NOT NULL DEFAULT (datetime('now'))
+  id             INTEGER PRIMARY KEY AUTOINCREMENT,
+  name           TEXT NOT NULL,
+  name_en        TEXT,
+  slug           TEXT NOT NULL UNIQUE,
+  parent_id      INTEGER REFERENCES categories(id) ON DELETE SET NULL,
+  description    TEXT,
+  description_en TEXT,
+  sort_order     INTEGER NOT NULL DEFAULT 0,
+  created_at     TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
 CREATE TABLE IF NOT EXISTS tags (
@@ -49,9 +51,12 @@ CREATE TABLE IF NOT EXISTS tags (
 CREATE TABLE IF NOT EXISTS posts (
   id           INTEGER PRIMARY KEY AUTOINCREMENT,
   title        TEXT NOT NULL,
+  title_en     TEXT,
   slug         TEXT NOT NULL UNIQUE,
   content      TEXT NOT NULL DEFAULT '',
+  content_en   TEXT NOT NULL DEFAULT '',
   excerpt      TEXT,
+  excerpt_en   TEXT,
   cover_image  TEXT,
   status       TEXT NOT NULL DEFAULT 'draft',
   type         TEXT NOT NULL DEFAULT 'post',
@@ -77,7 +82,9 @@ CREATE TABLE IF NOT EXISTS post_versions (
   id         INTEGER PRIMARY KEY AUTOINCREMENT,
   post_id    INTEGER NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
   title      TEXT NOT NULL,
+  title_en   TEXT,
   content    TEXT NOT NULL,
+  content_en TEXT,
   editor_id  INTEGER REFERENCES users(id),
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
@@ -120,6 +127,7 @@ CREATE TABLE IF NOT EXISTS product_categories (
   slug        TEXT NOT NULL UNIQUE,
   parent_id   INTEGER REFERENCES product_categories(id) ON DELETE SET NULL,
   description TEXT,
+  description_en TEXT,
   sort_order  INTEGER NOT NULL DEFAULT 0,
   created_at  TEXT NOT NULL DEFAULT (datetime('now'))
 );
@@ -163,30 +171,37 @@ CREATE TABLE IF NOT EXISTS inquiries (
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX IF NOT EXISTS idx_inquiries_status ON inquiries(status);
+`;
 
+// FTS 建表与触发器需在旧库补充英文字段后执行
+const FTS_DDL = `
 -- 全文搜索（FTS5 外部内容表，trigram 分词器支持中文检索）
 DROP TABLE IF EXISTS posts_fts;
 CREATE VIRTUAL TABLE IF NOT EXISTS posts_fts USING fts5(
-  title, content, excerpt,
+  title, title_en, content, content_en, excerpt, excerpt_en,
   content='posts', content_rowid='id',
   tokenize='trigram'
 );
 
-CREATE TRIGGER IF NOT EXISTS posts_ai AFTER INSERT ON posts BEGIN
-  INSERT INTO posts_fts(rowid, title, content, excerpt)
-  VALUES (new.id, new.title, new.content, new.excerpt);
+DROP TRIGGER IF EXISTS posts_ai;
+DROP TRIGGER IF EXISTS posts_ad;
+DROP TRIGGER IF EXISTS posts_au;
+
+CREATE TRIGGER posts_ai AFTER INSERT ON posts BEGIN
+  INSERT INTO posts_fts(rowid, title, title_en, content, content_en, excerpt, excerpt_en)
+  VALUES (new.id, new.title, new.title_en, new.content, new.content_en, new.excerpt, new.excerpt_en);
 END;
 
-CREATE TRIGGER IF NOT EXISTS posts_ad AFTER DELETE ON posts BEGIN
-  INSERT INTO posts_fts(posts_fts, rowid, title, content, excerpt)
-  VALUES ('delete', old.id, old.title, old.content, old.excerpt);
+CREATE TRIGGER posts_ad AFTER DELETE ON posts BEGIN
+  INSERT INTO posts_fts(posts_fts, rowid, title, title_en, content, content_en, excerpt, excerpt_en)
+  VALUES ('delete', old.id, old.title, old.title_en, old.content, old.content_en, old.excerpt, old.excerpt_en);
 END;
 
-CREATE TRIGGER IF NOT EXISTS posts_au AFTER UPDATE ON posts BEGIN
-  INSERT INTO posts_fts(posts_fts, rowid, title, content, excerpt)
-  VALUES ('delete', old.id, old.title, old.content, old.excerpt);
-  INSERT INTO posts_fts(rowid, title, content, excerpt)
-  VALUES (new.id, new.title, new.content, new.excerpt);
+CREATE TRIGGER posts_au AFTER UPDATE ON posts BEGIN
+  INSERT INTO posts_fts(posts_fts, rowid, title, title_en, content, content_en, excerpt, excerpt_en)
+  VALUES ('delete', old.id, old.title, old.title_en, old.content, old.content_en, old.excerpt, old.excerpt_en);
+  INSERT INTO posts_fts(rowid, title, title_en, content, content_en, excerpt, excerpt_en)
+  VALUES (new.id, new.title, new.title_en, new.content, new.content_en, new.excerpt, new.excerpt_en);
 END;
 `;
 
@@ -249,16 +264,29 @@ const DEFAULT_SETTINGS: Record<string, unknown> = {
 function seed() {
   sqlite.exec(DDL);
 
-  // 旧库迁移：为 products 表补充 spec_en 列
-  const productCols = sqlite.prepare("PRAGMA table_info(products)").all() as {
-    name: string;
-  }[];
-  if (!productCols.some((c) => c.name === "spec_en")) {
-    sqlite.exec("ALTER TABLE products ADD COLUMN spec_en TEXT;");
-    console.log("✔ 已迁移：products 表新增 spec_en 列");
-  }
+  // 旧库迁移：为已有表补充新增列
+  const addMissingColumn = (table: string, column: string, definition: string) => {
+    const cols = sqlite.prepare(`PRAGMA table_info(${table})`).all() as {
+      name: string;
+    }[];
+    if (!cols.some((c) => c.name === column)) {
+      sqlite.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition};`);
+      console.log(`✔ 已迁移：${table} 表新增 ${column} 列`);
+    }
+  };
 
-  // 重建 FTS 索引（重建虚拟表后需重新填充）
+  addMissingColumn("products", "spec_en", "TEXT");
+  addMissingColumn("product_categories", "description_en", "TEXT");
+  addMissingColumn("categories", "name_en", "TEXT");
+  addMissingColumn("categories", "description_en", "TEXT");
+  addMissingColumn("posts", "title_en", "TEXT");
+  addMissingColumn("posts", "excerpt_en", "TEXT");
+  addMissingColumn("posts", "content_en", "TEXT NOT NULL DEFAULT ''");
+  addMissingColumn("post_versions", "title_en", "TEXT");
+  addMissingColumn("post_versions", "content_en", "TEXT");
+
+  // 字段补齐后再重建 FTS 结构与索引
+  sqlite.exec(FTS_DDL);
   sqlite.exec("INSERT INTO posts_fts(posts_fts) VALUES('rebuild');");
 
   // 角色

@@ -11,7 +11,7 @@ import {
   updateProductCategory,
 } from "@/services/product.service";
 
-export type ProductCategoryState = { error?: string } | null;
+export type ProductCategoryState = { error?: string; ok?: boolean } | null;
 
 function parseInput(formData: FormData) {
   return productCategorySchema.safeParse({
@@ -20,6 +20,7 @@ function parseInput(formData: FormData) {
     slug: formData.get("slug") || undefined,
     parentId: formData.get("parentId") || null,
     description: formData.get("description") || "",
+    descriptionEn: formData.get("descriptionEn") || "",
     sortOrder: formData.get("sortOrder") || "0",
   });
 }
@@ -35,7 +36,7 @@ export async function createProductCategoryAction(
   }
   createProductCategory(parsed.data);
   revalidatePath("/admin/product-categories");
-  return null;
+  return { ok: true };
 }
 
 export async function updateProductCategoryAction(
@@ -52,7 +53,7 @@ export async function updateProductCategoryAction(
   updateProductCategory(id, parsed.data);
   revalidatePath("/admin/product-categories");
   revalidatePath("/");
-  return null;
+  return { ok: true };
 }
 
 export async function deleteProductCategoryAction(formData: FormData) {
